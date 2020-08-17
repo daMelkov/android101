@@ -6,9 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +30,18 @@ public class MainActivity extends AppCompatActivity {
         //setSupportActionBar(toolbar);
 
         /* ListView */
-        List<Map<String, String>> content = prepareContent();
-        ListView list = findViewById(R.id.list);
-        list.setAdapter(createAdapter(content));
+        final List<Map<String, String>> content = prepareContent();
+        final BaseAdapter adapter = createAdapter(content);
+
+        final ListView list = findViewById(R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                content.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         /* SwipeRefreshLayout */
         final SwipeRefreshLayout swipe = findViewById(R.id.main_swipe);
