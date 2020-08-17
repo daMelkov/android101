@@ -19,12 +19,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView list = findViewById(R.id.list);
-
         String[] values = prepareContent();
-
         BaseAdapter listContentAdapter = createAdapter(values);
 
+        ListView list = findViewById(R.id.list);
         list.setAdapter(listContentAdapter);
     }
 
