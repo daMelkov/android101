@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* Toolbar */
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         /* ListView */
         final List<Map<String, String>> content = prepareContent();
         final BaseAdapter adapter = createAdapter(content);
@@ -48,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                content.clear();
+                content.addAll(prepareContent());
+                adapter.notifyDataSetChanged();
 
                 swipe.setRefreshing(false);
             }
@@ -68,19 +67,27 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < values.length; i++) {
             Map<String, String> item = new HashMap<>();
 
+            /* header */
             String headerValue = values[i].trim();
             i++;
+
+            /* paragraphs */
             StringBuilder contentValue = new StringBuilder();
             while(values[i].length() > 100) {
+                /* add paragraph to header */
                 contentValue.append(values[i].trim());
 
+                /* check next paragraph - this header? */
                 i++;
+
+                /* check end data */
                 if(i >= values.length - 1) {
                     break;
                 }
             }
             i--;
 
+            /* add header + paragraph */
             item.put("header", headerValue);
             item.put("content", contentValue.toString());
             result.add(item);
